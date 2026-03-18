@@ -1,0 +1,17 @@
+{
+  "node_dim": null,
+  "edge_dim": null,
+  "out_dim": 128,
+
+  "hidden_dim": 128,
+  "lr": 0.003,
+  "batch_size": 64,
+  "epochs": 5,
+
+  "lr_patience": 4,
+  "es_patience": 10,
+
+  "grid_x": 16,
+  "grid_y": 12,
+  "sigma": 1.5
+}

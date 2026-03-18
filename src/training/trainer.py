@@ -10,7 +10,7 @@ class Trainer:
         self.optimizer = optimizer
         self.loss_fn = loss_fn
         self.device = device
-
+        
     def train_epoch(self, loader):
         self.model.train()
         total_loss = 0.0
@@ -21,7 +21,7 @@ class Trainer:
 
             pred = self.model(batch)
 
-            loss = self.loss_fn(pred, batch.y)
+            loss = self.loss_fn(pred, batch.y, )
             loss.backward()
             self.optimizer.step()
 

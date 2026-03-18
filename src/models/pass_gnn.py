@@ -1,6 +1,7 @@
 import torch.nn as nn
 from torch_geometric.nn import GINEConv
-from .config import NUM_CELLS
+from pathlib import Path
+import sys
 
 class PassPredictionGNN(nn.Module):
     def __init__(
@@ -9,7 +10,9 @@ class PassPredictionGNN(nn.Module):
         edge_dim: int,
         num_event_types: int,
         hidden_dim: int = 64,
-        out_dim: int = 64
+        out_dim: int = 64,
+        grid_x: int = 16,
+        grid_y: int = 12
     ):
         super().__init__()
 
@@ -40,7 +43,7 @@ class PassPredictionGNN(nn.Module):
         self.pass_head = nn.Sequential(
             nn.Linear(out_dim, out_dim),
             nn.ReLU(),
-            nn.Linear(out_dim, NUM_CELLS)
+            nn.Linear(out_dim, grid_x * grid_y)  # Output logits for each cell in the grid
         )
 
     def forward(self, data):
