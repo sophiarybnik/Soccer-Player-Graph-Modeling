@@ -1,14 +1,15 @@
 {
   "node_dim": 5,
   "edge_dim": 4,
-  "out_dim": 128,
-  "hidden_dim": 128,
-  "lr": 0.001,
-  "batch_size": 32,
-  "epochs": 5,
+  "num_event_types": 24,
   "lr_patience": 4,
   "es_patience": 10,
+  "hidden_dim": 256,
+  "out_dim": 256,
+  "batch_size": 64,
   "grid_x": 16,
-  "grid_y": 12,
-  "sigma": 1.5
+  "grid_y": 8,
+  "lr": 0.007902619549708232,
+  "sigma": 2.9140800826863984,
+  "epochs": 17
 }

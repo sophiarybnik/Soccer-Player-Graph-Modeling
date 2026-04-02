@@ -11,9 +11,7 @@ def build_event_graph(
     event_type_to_idx: dict,
     config: GraphConfig
 ) -> Data | None:
-    """
-    Docstring for build_event_graph
-    
+    """    
     :param event_row: Description
     :type event_row: dict
     :param event_type_to_idx: Description
@@ -74,7 +72,7 @@ def build_event_graph(
         actor_idx=torch.tensor([actor_idx]),
         actor_player_id=torch.tensor([event_row["player"]["id"]]),
         event_type_idx=torch.tensor([event_type_idx]),
-        y=y,  # target (x_end, y_end) for regression,
+        y=y,  # target (x_end, y_end)
         metadata={
             "player_name": event_row["player"]["name"],
             "event_type": event_type,

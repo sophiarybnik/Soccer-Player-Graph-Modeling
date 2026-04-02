@@ -7,6 +7,11 @@ class GraphConfig:
     pitch_length: float = 120.0
     pitch_width: float = 80.0
 
+    # Train/val/test split for graph construction
+    train_frac = 0.7
+    val_frac = 0.15
+    test_frac = 0.15
+
     # Edge construction
     proximity_threshold: float = 10.0  # meters
 

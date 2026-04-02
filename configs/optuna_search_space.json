@@ -1,0 +1,25 @@
+{
+  "n_trials": 10,
+
+  "fixed": {
+    "lr_patience": 4,
+    "es_patience": 10
+  },
+
+  "categorical": {
+    "hidden_dim":  [64, 128, 256],
+    "out_dim":     [64, 128, 256],
+    "batch_size":  [32, 64, 128],
+    "grid_x":      [12, 16, 24],
+    "grid_y":      [8, 12, 16]
+  },
+
+  "float": {
+    "lr":    { "low": 0.0001, "high": 0.01, "log": true },
+    "sigma": { "low": 0.5,    "high": 3.0,  "log": false }
+  },
+
+  "int": {
+    "epochs": { "low": 5, "high": 20 }
+  }
+}

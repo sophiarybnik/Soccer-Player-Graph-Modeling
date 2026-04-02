@@ -1,5 +1,4 @@
 from pathlib import Path
-import torch
 import matplotlib.pyplot as plt
 import networkx as nx
 

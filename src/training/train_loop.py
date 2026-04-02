@@ -33,7 +33,8 @@ def run_training(config, train_graphs, val_graphs, event_type_to_idx, device):
     
     loss_fn = partial(pass_location_ce, grid_x=config["grid_x"], grid_y=config["grid_y"])
     trainer   = Trainer(model, optimizer, loss_fn, device)
-    evaluator = Evaluator(model, loss_fn, device)
+    evaluator = Evaluator(model, loss_fn, grid_x=config["grid_x"], grid_y=config["grid_y"], device=device)
+
 
     best_val_loss = float("inf")
     epochs_no_improve = 0
@@ -41,7 +42,7 @@ def run_training(config, train_graphs, val_graphs, event_type_to_idx, device):
 
     for epoch in range(1, config["epochs"] + 1):
         train_loss = trainer.train_epoch(train_loader)
-        val_loss   = evaluator.evaluate(val_loader)
+        val_loss   = evaluator.evaluate(val_loader)["loss"]
 
         history["train_loss"].append(train_loss)
         history["val_loss"].append(val_loss)

@@ -1,7 +1,5 @@
 import torch.nn as nn
 from torch_geometric.nn import GINEConv
-from pathlib import Path
-import sys
 
 class PassPredictionGNN(nn.Module):
     def __init__(

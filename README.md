@@ -1,10 +1,14 @@
-# ⚽ Soccer Ball Pass Prediction Model
+# Soccer Pass Prediction with Graph Neural Networks
 
 This repository implements a **graph neural network (GNN)** for soccer pass predictions using StatsBomb 360 event data. It includes data processing, graph construction, model training, hyperparameter tuning, inference, and visualization.
 
+Each passing situation is represented as a player graph — nodes are players, edges encode spatial relationships — and the model learns to predict where the ball carrier will pass next.
+
+
+
 ---
 
-## 🎯 Project Motivation
+## Motivation
 
 The primary goal of this project is to model and understand passing behavior using GNNs. By learning spatial and relational patterns between players, this model aims to:
 
@@ -14,20 +18,21 @@ The primary goal of this project is to model and understand passing behavior usi
 
 Ultimately, this work is a step toward quantifying **how players play**, enabling comparisons in style, strategy, and decision-making across matches and competitions.
 
+
+
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
-C:.
-├── checkpoints/            # Saved models
-│   ├── best_pass_gnn.pt
-│   └── latest_pass_gnn.pt
-│   └── best_config.json
-├── configs/                # Configuration files
-│   ├── base_config.json
-│   └── search_space.json
-├── data/                   # Processed events data and pass graphs
+├── checkpoints/
+│   ├── best_pass_gnn.pt        # Best trained model weights
+│   ├── best_config.json        # Config from best tuning trial
+│   ├── optuna_study.db         # Optuna study database
+│   └── tuning_summary.json     # Full hyperparameter search history
+├── configs/
+│   └── optuna_search_space.json  # Bayesian search space + fixed params
+├── data/
 │   ├── graphs/
 │   │   ├── train.pt
 │   │   ├── val.pt
@@ -36,128 +41,145 @@ C:.
 │       ├── events_full.parquet
 │       ├── pass_events.parquet
 │       └── event_type_vocab.json
-├── notebooks/              # Exploratory notebooks
+├── notebooks/                  # Exploratory analysis
 ├── outputs/
-│   └── predictions/        # Prediction visualization output
-├── scripts/                # Pipeline entry points
+│   └── predictions/            # Heatmap visualizations
+├── scripts/                    # Pipeline entry points
 │   ├── build_canonical_tables.py
 │   ├── build_pass_graphs.py
-│   ├── evaluate_pass_gnn.py
-│   ├── train_pass_gnn.py
 │   ├── tune_pass_gnn.py
+│   ├── train_pass_gnn.py
+│   ├── evaluate_pass_gnn.py
 │   └── visualize_predictions.py
-├── src/                    # Core source code
-│   ├── data/               # StatsBomb loaders & canonical tables
-│   ├── datasets/           # PyG datasets
-│   ├── graphs/             # Graph construction
-│   ├── inference/          # Prediction scripts
-│   ├── models/             # GNN architectures
-│   ├── training/           # Trainer, evaluator, and loops
-│   ├── utils/              # Helper functions
-│   └── visualization/      # Heatmaps and plotting utilities
+└── src/
+    ├── data/                   # StatsBomb loaders & canonical tables
+    ├── datasets/               # PyG dataset wrappers
+    ├── graphs/                 # Graph construction
+    ├── inference/              # Prediction utilities
+    ├── models/                 # GNN architecture
+    ├── training/               # Trainer, Evaluator, loss functions
+    ├── utils/                  # Config loading and helpers
+    └── visualization/          # Heatmaps and pitch plotting
 └── statsbomb_data/         # Raw StatsBomb JSON
+
 ```
 
 ---
 
-## ⚙️ Installation
-
-1. Clone the repository:
+## Installation
 
 ```bash
-cd C:\Users\YourUser\Projects
 git clone https://github.com/sophiarybnik/statsbombpredictions.git
-```
+cd statsbombpredictions
 
-2. Create a Python environment and install dependencies:
-
-```bash
 conda create -n pass_gnn python=3.10
 conda activate pass_gnn
 pip install -r requirements.txt
 ```
+
 ---
 
-## 🏁 Quickstart
+## Pipeline
 
-Run the full pipeline from raw StatsBomb data to visualized pass predictions:
+Run the full pipeline in order:
 
-1. **Load and process StatsBomb data:**
-
+**1. Process raw StatsBomb data**
 ```bash
 python scripts/build_canonical_tables.py
 ```
 
-2. **Construct pass event graphs:**
-
+**2. Build pass graphs**
 ```bash
 python scripts/build_pass_graphs.py
 ```
 
-3. **Run grid search over the hyperparameter space:**
+**3. Tune hyperparameters**
 ```bash
 python scripts/tune_pass_gnn.py
 ```
+Uses Bayesian optimization (Optuna TPE sampler) to search over architecture, training, and spatial parameters. To launch the dashboard, open a second terminal while tuning is running:
 
-4. **Train the PassPredictionGNN model:**
+```bash
+optuna-dashboard sqlite:///checkpoints/optuna_study.db
+```
 
+Then open http://localhost:8080 in browser.
+
+**4. Train the model**
 ```bash
 python scripts/train_pass_gnn.py
 ```
+Trains using the best config from tuning. Best weights are saved to `checkpoints/best_pass_gnn.pt`.
 
-5. **Visualize heatmaps of pass predictions:**
+**5. Evaluate**
+```bash
+python scripts/evaluate_pass_gnn.py
+```
+Reports loss, ADE (argmax and centroid), top-k accuracy, and rank metrics against random and centre-of-pitch baselines.
 
+**6. Visualize predictions**
 ```bash
 python scripts/visualize_predictions.py
 ```
-* Outputs are saved to `outputs/predictions/`.
-
-
-## 🎯 Evaluation / Inference
-
-Evaluate or make predictions on new graphs:
-
-```bash
-python scripts/evaluate_pass_gnn.py
-python src/inference/predict.py
-```
-
-* Uses a trained model (`best_pass_gnn.pt`) to compute metrics or generate predictions.
-
+Outputs pass predictions to `outputs/predictions/`.
 
 ---
 
-## 🧩 Configuration
+## Model
 
-* `configs/base_config.json` — default hyperparameters and dimensions.
+`PassPredictionGNN` represents each passing situation as a graph and predicts a probability distribution over a discretized pitch grid (default 16×12 = 192 cells).
 
-* `configs/search_space.json` — grid search space for tuning.
+**Architecture:**
+- Node features are projected into a shared hidden space via a linear layer
+- The actor node (ball carrier) receives an additional event type embedding
+- Two stacked `GINEConv` layers propagate information across the graph, conditioning messages on edge attributes
+- The actor's final embedding feeds into a prediction head that outputs logits over all grid cells
 
-* `src/graphs/config.py` — pitch and graph parameters. 
+**Edge attributes** encode the spatial relationship between each pair of players: distance, angle, and binary flags for pressure (opponent bearing down on the actor) and support (available teammate).
 
-    **Note:** Pitch dimensions should remain fixed to the Statsbomb dimensions, but the proximity threshold can be tuned. Node and edge dimensions are inferred directly from the dataset.
+**Loss function** (`pass_location_ce`): cross-entropy over the discretized pitch grid, with optional Gaussian smoothing on the target distribution to encourage the model to learn spatial spread rather than hard single-cell targets.
 
 ---
-## 🔧 Notes
 
-* `Trainer` and `Evaluator` are modular and decoupled from model architecture, enabling easy experimentation with different loss functions and training strategies.
+## Evaluation Metrics
 
-* The loss function (`pass_location_ce`) operates over a discretized pitch grid, converting continuous pass targets into classification over spatial cells. The grid resolution and gaussian smoothing can be controlled from `base_config.json`.
+| Metric | Description |
+|---|---|
+| ADE (argmax) | Distance in metres from predicted cell peak to true destination |
+| ADE (centroid) | Distance using probability-weighted centroid — lower than argmax when distribution is spread |
+| Top-k accuracy | Whether true destination appears in model's top k cells |
+| Mean / median rank | Rank of true destination cell in the sorted probability distribution (out of all possible cells in discrete grid) |
+
+Baselines: uniform random predictor and centre-of-pitch predictor.
+
 ---
 
-## 🚀 Next Steps / Improvements
-* Extend the framework beyond passes to **include other event types** such as:
-  - Shots
-  - Carries / dribbles
-  - Defensive actions (pressures, tackles)
+## Configuration
 
-* Add **attention mechanisms (GAT / transformer-based GNNs)** for better relational reasoning.
-* Incorporate **temporal context** (sequence of events before the pass).
-* Predict **pass success probability** alongside destination.
-* **Replace grid search** with:
-  - Random search
-  - Bayesian optimization (e.g., Optuna)
-* Add **experiment tracking** (e.g., MLflow, Weights & Biases).
-* Add **k-fold cross-validation** for more robust evaluation.
-* Animate **passing sequences** instead of static plots.
+All tunable parameters are defined in `configs/optuna_search_space.json`:
 
+- `fixed` — parameters held constant across trials (e.g. `lr_patience`, `es_patience`)
+- `categorical` — discrete choices (e.g. `hidden_dim`, `grid_x`, `batch_size`)
+- `float` — continuous ranges (e.g. `lr`, `sigma`)
+- `int` — integer ranges (e.g. `epochs`)
+
+Node and edge dimensions are inferred automatically from the dataset at runtime.
+
+---
+
+## Notes
+
+- `Trainer` and `Evaluator` are decoupled from model architecture, making it straightforward to swap loss functions or evaluation strategies independently.
+- The pitch grid resolution (`grid_x`, `grid_y`) and Gaussian smoothing (`sigma`) are tunable; coarser grids are easier to classify, finer grids give more spatial precision.
+- Pitch dimensions are fixed to StatsBomb coordinates (120×80m). The proximity threshold for edge construction can be adjusted in `src/graphs/config.py`.
+
+---
+
+## Next Steps
+
+- Extend to other event types: shots, carries, defensive actions
+- Add attention mechanisms (GAT / transformer-based GNN) for richer relational reasoning
+- Incorporate temporal context — sequence of events leading up to the pass
+- Predict pass success probability alongside destination
+- Add k-fold cross-validation for more robust evaluation
+- Animate passing sequences rather than static heatmaps

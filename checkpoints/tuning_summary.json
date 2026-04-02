@@ -1,0 +1,302 @@
+[
+  {
+    "trial": 0,
+    "val_loss": null,
+    "params": {
+      "hidden_dim": 128,
+      "out_dim": 64,
+      "batch_size": 64,
+      "grid_x": 24,
+      "grid_y": 8,
+      "lr": 0.00023270677083837802,
+      "sigma": 1.2606056073988443,
+      "epochs": 13
+    },
+    "state": "TrialState.PRUNED"
+  },
+  {
+    "trial": 1,
+    "val_loss": null,
+    "params": {
+      "hidden_dim": 256,
+      "out_dim": 256,
+      "batch_size": 64,
+      "grid_x": 16,
+      "grid_y": 8,
+      "lr": 0.007902619549708232,
+      "sigma": 2.9140800826863984,
+      "epochs": 17
+    },
+    "state": "TrialState.PRUNED"
+  },
+  {
+    "trial": 2,
+    "val_loss": null,
+    "params": {
+      "hidden_dim": 256,
+      "out_dim": 256,
+      "batch_size": 64,
+      "grid_x": 12,
+      "grid_y": 16,
+      "lr": 0.0035503048581283078,
+      "sigma": 2.848747353910473,
+      "epochs": 19
+    },
+    "state": "TrialState.PRUNED"
+  },
+  {
+    "trial": 3,
+    "val_loss": null,
+    "params": {
+      "hidden_dim": 128,
+      "out_dim": 256,
+      "batch_size": 128,
+      "grid_x": 24,
+      "grid_y": 12,
+      "lr": 0.009413993046829943,
+      "sigma": 2.4306119232416434,
+      "epochs": 8
+    },
+    "state": "TrialState.RUNNING"
+  },
+  {
+    "trial": 4,
+    "val_loss": null,
+    "params": {
+      "hidden_dim": 128,
+      "out_dim": 64,
+      "batch_size": 64,
+      "grid_x": 24,
+      "grid_y": 8,
+      "lr": 0.00023270677083837802,
+      "sigma": 1.2606056073988443,
+      "epochs": 13
+    },
+    "state": "TrialState.PRUNED"
+  },
+  {
+    "trial": 5,
+    "val_loss": null,
+    "params": {
+      "hidden_dim": 256,
+      "out_dim": 256,
+      "batch_size": 64,
+      "grid_x": 16,
+      "grid_y": 8,
+      "lr": 0.007902619549708232,
+      "sigma": 2.9140800826863984,
+      "epochs": 17
+    },
+    "state": "TrialState.RUNNING"
+  },
+  {
+    "trial": 6,
+    "val_loss": null,
+    "params": {
+      "hidden_dim": 128,
+      "out_dim": 64,
+      "batch_size": 64,
+      "grid_x": 24,
+      "grid_y": 8,
+      "lr": 0.00023270677083837802,
+      "sigma": 1.2606056073988443,
+      "epochs": 13
+    },
+    "state": "TrialState.PRUNED"
+  },
+  {
+    "trial": 7,
+    "val_loss": null,
+    "params": {
+      "hidden_dim": 256,
+      "out_dim": 256,
+      "batch_size": 64,
+      "grid_x": 16,
+      "grid_y": 8,
+      "lr": 0.007902619549708232,
+      "sigma": 2.9140800826863984,
+      "epochs": 17
+    },
+    "state": "TrialState.RUNNING"
+  },
+  {
+    "trial": 8,
+    "val_loss": null,
+    "params": {
+      "hidden_dim": 128,
+      "out_dim": 64,
+      "batch_size": 64,
+      "grid_x": 24,
+      "grid_y": 8,
+      "lr": 0.00023270677083837802,
+      "sigma": 1.2606056073988443,
+      "epochs": 13
+    },
+    "state": "TrialState.PRUNED"
+  },
+  {
+    "trial": 9,
+    "val_loss": null,
+    "params": {
+      "hidden_dim": 256,
+      "out_dim": 256,
+      "batch_size": 64,
+      "grid_x": 16,
+      "grid_y": 8,
+      "lr": 0.007902619549708232,
+      "sigma": 2.9140800826863984,
+      "epochs": 17
+    },
+    "state": "TrialState.RUNNING"
+  },
+  {
+    "trial": 10,
+    "val_loss": 3.9247603178581647,
+    "params": {
+      "hidden_dim": 128,
+      "out_dim": 64,
+      "batch_size": 64,
+      "grid_x": 24,
+      "grid_y": 8,
+      "lr": 0.00023270677083837802,
+      "sigma": 1.2606056073988443,
+      "epochs": 13
+    },
+    "state": "TrialState.COMPLETE"
+  },
+  {
+    "trial": 11,
+    "val_loss": 3.5765919405447555,
+    "params": {
+      "hidden_dim": 256,
+      "out_dim": 256,
+      "batch_size": 64,
+      "grid_x": 16,
+      "grid_y": 8,
+      "lr": 0.007902619549708232,
+      "sigma": 2.9140800826863984,
+      "epochs": 17
+    },
+    "state": "TrialState.COMPLETE"
+  },
+  {
+    "trial": 12,
+    "val_loss": 3.8734012104301865,
+    "params": {
+      "hidden_dim": 256,
+      "out_dim": 256,
+      "batch_size": 64,
+      "grid_x": 12,
+      "grid_y": 16,
+      "lr": 0.0035503048581283078,
+      "sigma": 2.848747353910473,
+      "epochs": 19
+    },
+    "state": "TrialState.COMPLETE"
+  },
+  {
+    "trial": 13,
+    "val_loss": 4.361373254024349,
+    "params": {
+      "hidden_dim": 128,
+      "out_dim": 256,
+      "batch_size": 128,
+      "grid_x": 24,
+      "grid_y": 12,
+      "lr": 0.009413993046829943,
+      "sigma": 2.4306119232416434,
+      "epochs": 8
+    },
+    "state": "TrialState.COMPLETE"
+  },
+  {
+    "trial": 14,
+    "val_loss": 3.8886977467177406,
+    "params": {
+      "hidden_dim": 64,
+      "out_dim": 128,
+      "batch_size": 32,
+      "grid_x": 16,
+      "grid_y": 12,
+      "lr": 0.0012075018821115235,
+      "sigma": 0.5389869991461409,
+      "epochs": 6
+    },
+    "state": "TrialState.COMPLETE"
+  },
+  {
+    "trial": 15,
+    "val_loss": 3.91595932152559,
+    "params": {
+      "hidden_dim": 256,
+      "out_dim": 256,
+      "batch_size": 32,
+      "grid_x": 12,
+      "grid_y": 16,
+      "lr": 0.0025463853631993304,
+      "sigma": 2.2928904262857777,
+      "epochs": 20
+    },
+    "state": "TrialState.COMPLETE"
+  },
+  {
+    "trial": 16,
+    "val_loss": 3.8646952400956516,
+    "params": {
+      "hidden_dim": 256,
+      "out_dim": 256,
+      "batch_size": 128,
+      "grid_x": 12,
+      "grid_y": 16,
+      "lr": 0.003816555624863523,
+      "sigma": 2.4060952136227516,
+      "epochs": 17
+    },
+    "state": "TrialState.COMPLETE"
+  },
+  {
+    "trial": 17,
+    "val_loss": 4.119726793287878,
+    "params": {
+      "hidden_dim": 256,
+      "out_dim": 128,
+      "batch_size": 128,
+      "grid_x": 16,
+      "grid_y": 16,
+      "lr": 0.0015061617425784664,
+      "sigma": 2.32727825575854,
+      "epochs": 16
+    },
+    "state": "TrialState.COMPLETE"
+  },
+  {
+    "trial": 18,
+    "val_loss": 3.8822907917997616,
+    "params": {
+      "hidden_dim": 64,
+      "out_dim": 256,
+      "batch_size": 128,
+      "grid_x": 12,
+      "grid_y": 16,
+      "lr": 0.005278251943112829,
+      "sigma": 1.871374076780203,
+      "epochs": 16
+    },
+    "state": "TrialState.COMPLETE"
+  },
+  {
+    "trial": 19,
+    "val_loss": 3.841833198401843,
+    "params": {
+      "hidden_dim": 256,
+      "out_dim": 256,
+      "batch_size": 128,
+      "grid_x": 16,
+      "grid_y": 12,
+      "lr": 0.000588705649689643,
+      "sigma": 2.612086344657229,
+      "epochs": 10
+    },
+    "state": "TrialState.COMPLETE"
+  }
+]
