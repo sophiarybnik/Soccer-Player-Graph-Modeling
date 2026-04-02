@@ -18,27 +18,34 @@ from src.visualization.engine import plot_prediction_heatmap
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 CHECKPOINT = PROJECT_ROOT / "checkpoints" / "best_pass_gnn.pt"
 
-# --- Load data ---
+# Load data
 graphs_dir = PROJECT_ROOT / "data" / "processed" / "graphs"
 val_graphs = torch.load(graphs_dir / "val.pt")
 
-# --- Load vocab ---
+#  Load vocab
 with open(PROJECT_ROOT / "data" / "processed" / "event_type_vocab.json") as f:
     event_type_to_idx = json.load(f)
 
-# --- Load grid config ---
-with open(PROJECT_ROOT / "checkpoints" / "best_config.json") as f:
-    grid_config = json.load(f)
-    GRID_X = grid_config["grid_x"]
-    GRID_Y = grid_config["grid_y"]
+# Load checkpoint and config
+checkpoint = torch.load(PROJECT_ROOT / "checkpoints/best_pass_gnn.pt")
+config = checkpoint["config"]
+print(f"[checkpoint] loaded from checkpoints/best_pass_gnn.pt")
+print(f"[config] {config}")
 
-# --- Load model ---
+GRID_X = config["grid_x"]
+GRID_Y = config["grid_y"]
+NUM_CELLS = GRID_X * GRID_Y
+print(f"[grid] {GRID_X} x {GRID_Y} = {NUM_CELLS} cells")
+
+
 model = PassPredictionGNN(
-    node_dim=5,
-    edge_dim=4,
-    hidden_dim=128,
-    out_dim=128,
+    node_dim=config["node_dim"],
+    edge_dim=config["edge_dim"],
+    hidden_dim=config["hidden_dim"],
+    out_dim=config["out_dim"],
     num_event_types=len(event_type_to_idx),
+    grid_x=GRID_X,
+    grid_y=GRID_Y,
 )
 
 checkpoint = torch.load(CHECKPOINT, map_location=DEVICE)
@@ -49,7 +56,7 @@ model.eval()
 
 print(f"Loaded model from {CHECKPOINT}")
 
-# --- Run visualization ---
+# Run visualization
 plot_prediction_heatmap(
     val_graphs[:100],
     model,
@@ -59,4 +66,4 @@ plot_prediction_heatmap(
     save_dir=PROJECT_ROOT / "outputs" / "predictions",
     device=DEVICE,
 )
-print(f"Saved visualizations to {PROJECT_ROOT}\\outputs\\predictions")
+print(f"[saved] visualizations to → outputs/predictions")
