@@ -127,7 +127,7 @@ Outputs pass predictions to `outputs/predictions/`.
 
 ## Model
 
-`PassPredictionGNN` represents each passing situation as a graph and predicts a probability distribution over a discretized pitch grid (default 16×12 = 192 cells).
+`PassPredictionGNN` represents each passing situation as a graph and predicts a probability distribution over a discretized pitch grid.
 
 **Architecture:**
 - Node features are projected into a shared hidden space via a linear layer
@@ -137,8 +137,7 @@ Outputs pass predictions to `outputs/predictions/`.
 
 **Edge attributes** encode the spatial relationship between each pair of players: distance, angle, and binary flags for pressure (opponent bearing down on the actor) and support (available teammate).
 
-**Loss function** (`pass_location_ce`): cross-entropy over the discretized pitch grid, with optional Gaussian smoothing on the target distribution to encourage the model to learn spatial spread rather than hard single-cell targets.
-
+**Loss function** (`pass_location_ce`): custom loss function over the discretized pitch grid, that incorporates Gaussian smoothing and KL divergence to train the model to understand that pass destinations exist in continuous space, not completely independent discrete classes.
 ---
 
 ## Evaluation Metrics
@@ -146,7 +145,7 @@ Outputs pass predictions to `outputs/predictions/`.
 | Metric | Description |
 |---|---|
 | ADE (argmax) | Distance in metres from predicted cell peak to true destination |
-| ADE (centroid) | Distance using probability-weighted centroid — lower than argmax when distribution is spread |
+| ADE (centroid) | Distance using probability-weighted centroid |
 | Top-k accuracy | Whether true destination appears in model's top k cells |
 | Mean / median rank | Rank of true destination cell in the sorted probability distribution (out of all possible cells in discrete grid) |
 

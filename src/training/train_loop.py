@@ -31,7 +31,7 @@ def run_training(config, train_graphs, val_graphs, event_type_to_idx, device):
     train_loader = DataLoader(GraphDataset(train_graphs), batch_size=config["batch_size"], shuffle=True)
     val_loader   = DataLoader(GraphDataset(val_graphs), batch_size=config["batch_size"], shuffle=False)
     
-    loss_fn = partial(pass_location_ce, grid_x=config["grid_x"], grid_y=config["grid_y"])
+    loss_fn = partial(pass_location_ce, grid_x=config["grid_x"], grid_y=config["grid_y"], sigma=1.5)
     trainer   = Trainer(model, optimizer, loss_fn, device)
     evaluator = Evaluator(model, loss_fn, grid_x=config["grid_x"], grid_y=config["grid_y"], device=device)
 
@@ -39,6 +39,7 @@ def run_training(config, train_graphs, val_graphs, event_type_to_idx, device):
     best_val_loss = float("inf")
     epochs_no_improve = 0
     history = {"train_loss": [], "val_loss": []}
+
 
     for epoch in range(1, config["epochs"] + 1):
         train_loss = trainer.train_epoch(train_loader)

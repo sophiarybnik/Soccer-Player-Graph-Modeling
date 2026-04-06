@@ -70,7 +70,7 @@ print(f"[loader] {len(loader)} batches at batch_size={config['batch_size']}")
 
 
 # Loss function
-loss_fn = functools.partial(pass_location_ce, grid_x=GRID_X, grid_y=GRID_Y)
+loss_fn = functools.partial(pass_location_ce, grid_x=GRID_X, grid_y=GRID_Y, sigma=config["sigma"])
 
 # Run evaluation
 print("\n[eval] running full evaluation on test set...")

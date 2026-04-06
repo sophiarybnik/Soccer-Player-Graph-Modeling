@@ -12,6 +12,8 @@ warnings.filterwarnings(
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
+print("PROJECT_ROOT:", PROJECT_ROOT)
+
 
 from src.models.pass_gnn import PassPredictionGNN
 from src.visualization.engine import plot_prediction_heatmap
@@ -62,7 +64,7 @@ plot_prediction_heatmap(
     model,
     grid_x=GRID_X,
     grid_y=GRID_Y,
-    sigma=1.5,
+    sigma=1,
     save_dir=PROJECT_ROOT / "outputs" / "predictions",
     device=DEVICE,
 )

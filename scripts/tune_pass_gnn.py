@@ -12,6 +12,8 @@ warnings.filterwarnings(
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
+print("PROJECT_ROOT:", PROJECT_ROOT)
+
 sys.path.insert(0, str(PROJECT_ROOT))
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
